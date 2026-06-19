@@ -9,14 +9,14 @@ load_dotenv()
 client = OpenAI()
 deployment = "gpt-3.5-turbo"
 
-no_recipes = input("No of recipes (for example, 5: ")
+no_recipes = input("No of recipes (for example, 5): ")
 
-ingredients = input("List of ingredients (for example, chicken, potatoes, and carrots: ")
+ingredients = input("List of ingredients (for example, chicken, potatoes, and carrots): ")
 
-filter = input("Filter (for example, vegetarian, vegan, or gluten-free: ")
+dietary_restrictions = input("Any dietary restrictions (for example, vegetarian, vegan, or gluten-free): ")
 
 # interpolate the number of recipes into the prompt an ingredients
-prompt = f"Show me {no_recipes} recipes for a dish with the following ingredients: {ingredients}. Per recipe, list all the ingredients used, no {filter}: "
+prompt = f"Show me {no_recipes} recipes for a dish with the following ingredients: {ingredients}. Per recipe, list all the ingredients used, keep these dietary restrictions in mind {dietary_restrictions}: "
 messages = [{"role": "user", "content": prompt}]
 
 completion = client.chat.completions.create(model=deployment, messages=messages, max_tokens=600, temperature = 0.1)
@@ -39,4 +39,3 @@ else:
     print("\n=====Shopping list ======= \n")
     if completion.choices and completion.choices[0].message is not None:
         print(completion.choices[0].message.content)
-
